@@ -1,9 +1,9 @@
 ---
-// import type { Playlist } from "@/lib/data";
-
-// interface Props {
-//   playlist: Playlist;
-// }
+import type { Playlist } from "@/lib/data";
+import { CardPlayButton } from "@/components/CardPlayButton";
+interface Props {
+  playlist: Playlist;
+}
 
 const { playlist } = Astro.props;
 const { id, cover, title, artists, color } = playlist;
@@ -11,41 +11,40 @@ const { id, cover, title, artists, color } = playlist;
 const artistString = artists.join(", ");
 ---
 
-<a
-  href={`/playlist/${id}`}
-  class="transition-all
-  duration-200
-  flex
-  flex-col
-  relative
-  p-2
-  overflow-hidden
-  gap-2
-  pb-6
-  rounded-md
-  hover:bg-zinc-500
-  shadow-lg
-  bg-zinc-500/30
-  w-40"
-  transition:name=`playlist ${id} box`
+<article
+  class="group relative hover:shadow-xl hover:bg-zinc-800 shadow-lg rounded-md bg-zinc-500/30 transition-all duration-300"
 >
-  <picture class="aspect-square w-full h-auto flex-none">
-    <img
-      src={cover}
-      alt={`Cover of ${title} by ${artistString}`}
-      class="object-cover w-full h-full rounded-md"
-      transition:name=`playlist ${id} image`
-    />
-  </picture>
-  <div class="flex flex-auto flex-col truncate px-2">
-    <h4 class="text-sm text-white" transition:name=`playlist ${id} title`>
-      {title}
-    </h4>
-    <span
-      class="text-xs text-gray-400"
-      transition:name=`playlist ${id} artists`
-    >
-      {artistString}
-    </span>
-  </div></a
->
+  <div
+    class="absolute right-4 bottom-20 translate-y-4
+    transition-all duration-500 opacity-0
+    group-hover:translate-y-0 group-hover:opacity-100
+    z-10"
+  >
+    <CardPlayButton client:visible id={id} />
+  </div>
+  <a
+    href={`/playlist/${id}`}
+    class="transition-all duration-200 flex flex-col relative p-2 overflow-hidden gap-2 pb-6 w-40"
+    transition:name=`playlist ${id} box`
+  >
+    <picture class="aspect-square w-full h-auto flex-none">
+      <img
+        src={cover}
+        alt={`Cover of ${title} by ${artistString}`}
+        class="object-cover w-full h-full rounded-md"
+        transition:name=`playlist ${id} image`
+      />
+    </picture>
+    <div class="flex flex-auto flex-col truncate px-2">
+      <h4 class="text-sm text-white" transition:name=`playlist ${id} title`>
+        {title}
+      </h4>
+      <span
+        class="text-xs text-gray-400"
+        transition:name=`playlist ${id} artists`
+      >
+        {artistString}
+      </span>
+    </div></a
+  >
+</article>
